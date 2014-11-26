@@ -42,7 +42,7 @@ class Ping extends CI_Controller {
 	private function _traceroute_domain($domain)
 	{
 		$result = array();
-		exec("traceroute $domain 2>&1", $result['output'], $result['return_var']);
+		exec("traceroute $domain", $result['output'], $result['return_var']);
 		return $result;
 	}
 

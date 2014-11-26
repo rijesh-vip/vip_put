@@ -13,38 +13,35 @@ if(!empty($traceroute) && $traceroute['return_var'] == 0)
     </tr>
     <?php
     $traceroute_output = $traceroute['output'];
+    //"1  192.168.1.1 (192.168.1.1)  0.468 ms  0.705 ms  0.886 ms"
+    echo "<pre>"; var_dump($traceroute_output); echo "</pre>";
     $total = 0;
     foreach ($traceroute_output as $key => $item)
     {
       if($key != '0')
       {
-        $item = ltrim($item);
-        //$item = preg_replace('!\s+!', ' ', $item);
         $row = explode(" ", $item);
-        //echo "<pre>"; print_r($row); echo "</pre>";
-        if($row[2] == '*')
+        if($row[3] == '*')
         {
-          continue; //continue
+          break; //completed
         }
-        $total += (float)$row[11];
+        echo "<pre>"; print_r($row); echo "</pre>";
+        $total += (float)$row[12];
       }
     }
     $i=0;
-    //exit;
     reset($traceroute_output);
     foreach ($traceroute_output as $key => $item) 
     {
       if($key != '0')
       {
         $i++;
-        $item = ltrim($item);
-        //$item = preg_replace('!\s+!', ' ', $item);
         $row = explode(" ", $item);
-        if($row[2] == '*')
+        if($row[3] == '*')
         {
-          continue; //continue
+          break; //completed
         }
-        $percent = ((float)$row[11])*100/$total;
+        $percent = ((float)$row[12])*100/$total;
         ?>
         <tr>
           <td>
@@ -55,9 +52,9 @@ if(!empty($traceroute) && $traceroute['return_var'] == 0)
             </div>      
           </td>
           <td><?php echo $key?></td>
-          <td><?php echo $ip = str_replace(array('(',')'), "", $row[3])?></td>
-          <td><?php echo $row[2]?></td>
-          <td><?php echo $row[11]?></td>
+          <td><?php echo $ip = str_replace(array('(',')'), "", $row[4])?></td>
+          <td><?php echo $row[3]?></td>
+          <td><?php echo $row[12]?></td>
           <td>0</td>
         </tr>
       <?php
